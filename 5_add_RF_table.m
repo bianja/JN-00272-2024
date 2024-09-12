@@ -12,14 +12,13 @@
 % change path to data folder
 % opath = '\\132.187.28.171\home\Data\Analysis\matlab';
 
-for k = 5 : size(AllAni,2)
+for k = 84 : size(AllAni,2)
     
     if AllAni(k).Animal < 52
     else
         
-        cd(AllAni(k).File(1:57))
+        cd(['\\132.187.28.171\home\rest\data\Ephys\',AllAni(k).File(34:57)])
         foldpath = cd;
-        
         
         folder = foldpath;
         listing = dir(folder);
@@ -44,7 +43,7 @@ for k = 5 : size(AllAni,2)
         
         if exist('S')
             for i = 1 : size(S,2)
-                for s = 1 : 30
+                for s = 1 : size(S{i}.rec,2)
                     tAll = [];
                     for r = 1 : 5
                         stimval = find_spikes_RF(T01,AllAni(k).UnitNbr,S{1,i}.rec);
