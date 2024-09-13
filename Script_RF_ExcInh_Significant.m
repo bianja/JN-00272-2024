@@ -221,17 +221,19 @@ for i = 1 : size(AllAni,2)
     end
 end
 
-meanAngCW(find(isnan(meanAngCCW) == 1)) = NaN;
-meanAngCCW(find(isnan(meanAngCW) == 1)) = NaN;
-stimInfo(find(isnan(meanAngCCW) == 1),1:4) = NaN;
-widSCW(find(isnan(meanAngCCW) == 1)) = NaN;
-widECW(find(isnan(meanAngCCW) == 1)) = NaN;
-widDiffCW(find(isnan(meanAngCCW) == 1)) = NaN;
-widSCCW(find(isnan(meanAngCCW) == 1)) = NaN;
-widECCW(find(isnan(meanAngCCW) == 1)) = NaN;
-widDiffCCW(find(isnan(meanAngCCW) == 1)) = NaN;
-lengCCW(find(isnan(meanAngCCW) == 1)) = NaN;
-lengCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% because for this group RF that are only responding to one movement
+% direction are possible, we don't need the following lines
+% meanAngCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% meanAngCCW(find(isnan(meanAngCW) == 1)) = NaN;
+% stimInfo(find(isnan(meanAngCCW) == 1),1:4) = NaN;
+% widSCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% widECW(find(isnan(meanAngCCW) == 1)) = NaN;
+% widDiffCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% widSCCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% widECCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% widDiffCCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% lengCCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% lengCW(find(isnan(meanAngCCW) == 1)) = NaN;
 
 
 %% plot mean angular positions for all units
@@ -265,14 +267,22 @@ savefig(['RF_allStim_75_ccw_ExcInh',num2str(dat),'.fig'])
 %% plot width for all units
 widDiffCCW(find(widDiffCCW  > 360)) = abs(360-widDiffCCW(find(widDiffCCW  > 360))); 
 widDiffCW(find(widDiffCW  > 360)) = abs(360-widDiffCW(find(widDiffCW  > 360))); 
-Boxplot_B([widDiffCW' widDiffCCW'],2,15,[.75 .75 .75; .75 .75 .75],{'1','2'},[1,2])
+
+Boxplot_B([widDiffCW' widDiffCW'],2,15,[.75 .75 .75; .75 .75 .75],{'cw'},1)
 set(gcf,'position',[500 400 280 330])
 ylim([0 180])
-set(gca,'XTickLabels',{'cw','ccw'})
+xlim([.5 1.5])
 plot(ones(length(widDiffCW'),1),widDiffCW','.','Color',[.5 .5 .5])
-plot(ones(length(widDiffCCW'),1)+1,widDiffCCW','.','Color',[.5 .5 .5])
-print(['RF_BP_allStim_75_ExcInh',num2str(dat)],'-depsc','-r300','-tiff','-painters')
-savefig(['RF_BP_allStim_75_ExcInh',num2str(dat),'.fig'])
+print(['RF_BP_allStim_75_CW_ExcInh',num2str(dat)],'-depsc','-r300','-tiff','-painters')
+savefig(['RF_BP_allStim_75_CW_ExcInh',num2str(dat),'.fig'])
+
+Boxplot_B([widDiffCCW' widDiffCCW'],2,15,[.75 .75 .75; .75 .75 .75],{'ccw'},1)
+set(gcf,'position',[500 400 280 330])
+ylim([0 180])
+xlim([.5 1.5])
+plot(ones(length(widDiffCCW'),1),widDiffCCW','.','Color',[.5 .5 .5])
+print(['RF_BP_allStim_75_CCW_ExcInh',num2str(dat)],'-depsc','-r300','-tiff','-painters')
+savefig(['RF_BP_allStim_75_CCW_ExcInh',num2str(dat),'.fig'])
 
 % load StatsBPclustWid
 % clustWidStatsCW(1:length(widDiffCW),clust) =  widDiffCW;

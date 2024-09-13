@@ -1,6 +1,6 @@
 close all; clear
 
-dat = 1;
+dat = 2;
 
 if dat == 1
     load('\\132.187.28.171\home\rest\Manuskript\I_Optic_flow\JEB\data\RF\Results_ExcUni1_addRF_new_extended.mat')
@@ -222,17 +222,19 @@ for i = 1 : size(AllAni,2)
     end
 end
 
-meanAngCW(find(isnan(meanAngCCW) == 1)) = NaN;
-meanAngCCW(find(isnan(meanAngCW) == 1)) = NaN;
+% because for this group RF that are only responding to one movement
+% direction are possible, we don't need the following lines
+% meanAngCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% meanAngCCW(find(isnan(meanAngCW) == 1)) = NaN;
 % stimInfo(find(isnan(meanAngCCW) == 1),1:4) = NaN;
-widSCW(find(isnan(meanAngCCW) == 1)) = NaN;
-widECW(find(isnan(meanAngCCW) == 1)) = NaN;
-widDiffCW(find(isnan(meanAngCCW) == 1)) = NaN;
-widSCCW(find(isnan(meanAngCCW) == 1)) = NaN;
-widECCW(find(isnan(meanAngCCW) == 1)) = NaN;
-widDiffCCW(find(isnan(meanAngCCW) == 1)) = NaN;
-lengCCW(find(isnan(meanAngCCW) == 1)) = NaN;
-lengCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% widSCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% widECW(find(isnan(meanAngCCW) == 1)) = NaN;
+% widDiffCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% widSCCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% widECCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% widDiffCCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% lengCCW(find(isnan(meanAngCCW) == 1)) = NaN;
+% lengCW(find(isnan(meanAngCCW) == 1)) = NaN;
 
 
 %% plot mean angular positions for all units
@@ -245,7 +247,7 @@ set(gca,'ThetaZeroLocation', 'top','ThetaDir','clockwise')
 figure
 meanObjCW = CircHist(meanAngCW(~isnan(meanAngCW))',36,'areAxialData',false,'parent',polaraxes);
 set(gca,'ThetaZeroLocation', 'top','ThetaDir','clockwise')
-meanObjCW.setRLim([0 3])
+meanObjCW.setRLim([0 4])
 title('cw')
 print(['RF_allStim_75_cw_UniDir',num2str(dat)],'-depsc','-r300','-tiff','-painters')
 savefig(['RF_allStim_75_cw_UniDir',num2str(dat),'.fig'])
@@ -257,7 +259,7 @@ L4 = CircHist(widECCW(~isnan(widECCW)),36);
 figure
 meanObjCCW = CircHist(meanAngCCW(~isnan(meanAngCCW))',36,'areAxialData',false,'parent',polaraxes);
 set(gca,'ThetaZeroLocation', 'top','ThetaDir','counterclockwise')
-meanObjCCW.setRLim([0 3])
+meanObjCCW.setRLim([0 4])
 title('ccw')  
 print(['RF_allStim_75_ccw_Unidir',num2str(dat)],'-depsc','-r300','-tiff','-painters')
 savefig(['RF_allStim_75_ccw_UniDir',num2str(dat),'.fig'])
@@ -266,14 +268,24 @@ savefig(['RF_allStim_75_ccw_UniDir',num2str(dat),'.fig'])
 %% plot width for all units
 widDiffCCW(find(widDiffCCW  > 360)) = abs(360-widDiffCCW(find(widDiffCCW  > 360))); 
 widDiffCW(find(widDiffCW  > 360)) = abs(360-widDiffCW(find(widDiffCW  > 360))); 
-Boxplot_B([widDiffCW' widDiffCCW'],2,15,[.75 .75 .75; .75 .75 .75],{'1','2'},[1,2])
+
+Boxplot_B([widDiffCW' widDiffCW'],2,15,[.75 .75 .75; .75 .75 .75],{'cw'},[1])
 set(gcf,'position',[500 400 280 330])
 ylim([0 180])
-set(gca,'XTickLabels',{'cw','ccw'})
+xlim([.5 1.5])
+% set(gca,'XTickLabels',{'cw','ccw'})
 plot(ones(length(widDiffCW'),1),widDiffCW','.','Color',[.5 .5 .5])
-plot(ones(length(widDiffCCW'),1)+1,widDiffCCW','.','Color',[.5 .5 .5])
-print(['RF_BP_allStim_75_UniDir',num2str(dat)],'-depsc','-r300','-tiff','-painters')
-savefig(['RF_BP_allStim_75_UniDir',num2str(dat),'.fig'])
+print(['RF_BP_allStim_75_CW_UniDir',num2str(dat)],'-depsc','-r300','-tiff','-painters')
+savefig(['RF_BP_allStim_75_CW_UniDir',num2str(dat),'.fig'])
+
+Boxplot_B([widDiffCCW' widDiffCCW'],2,15,[.75 .75 .75; .75 .75 .75],{'ccw'},1)
+set(gcf,'position',[500 400 280 330])
+ylim([0 180])
+xlim([.5 1.5])
+% set(gca,'XTickLabels',{ccw'})
+plot(ones(length(widDiffCCW'),1),widDiffCCW','.','Color',[.5 .5 .5])
+print(['RF_BP_allStim_75_CCW_UniDir',num2str(dat)],'-depsc','-r300','-tiff','-painters')
+savefig(['RF_BP_allStim_75_CCW_UniDir',num2str(dat),'.fig'])
 
 % load StatsBPclustWid
 % clustWidStatsCW(1:length(widDiffCW),clust) =  widDiffCW;
